@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Movimentos Literários</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: Arial;
+    color: white;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    padding: 40px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: scale(1.2);
+    transition: all 0.8s ease;
+    top:0;
+    left:0;
+}
+
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    height: 100%;
+}
+
+.text {
+    width: 55%;
+    transform: translateX(-100px);
+    opacity: 0;
+    transition: all 0.8s ease;
+}
+
+.image {
+    width: 45%;
+    transform: translateX(100px);
+    opacity: 0;
+    transition: all 0.8s ease;
+}
+
+.slide.active .text,
+.slide.active .image {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- CAPA -->
+<div class="slide active">
+
+<img src="capa.jpg" style="
+position:absolute;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+object-fit: cover;
+">
+
+</div>
+
+<!-- Slide 1 -->
+<div class="slide" style="background:url('fundo.jpg') center/cover;">
+<div class="overlay"></div>
+<div class="content">
+
+<div class="text">
+<h1>Movimentos literários</h1>
+<p>A literatura é tradicionalmente dividida em escolas literárias. Essa divisão não significa que cada escola iniciou e terminou em um tempo determinado, mas tem como objetivo facilitar o ensino e o estudo da disciplina.</p>
+<p>Esses movimentos literários ou escolas literárias representam um conjunto de escritores e obras de determinado período da nossa história. Eles reúnem várias produções literárias com características e estilos similares.</p>
+</div>
+
+<div class="image">
+<img src="img1.jpg">
+</div>
+
+</div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide" style="background:url('fundo.jpg') center/cover;">
+<div class="overlay"></div>
+<div class="content">
+
+<div class="text">
+<h1>Quinhentismo</h1>
+<p>O Quinhentismo foi um movimento literário que abrangeu as produções escritas do primeiro século da colonização do território brasileiro. No artigo a seguir, iremos apresentar seu significado e as suas características principais.</p>
+</div>
+
+<div class="image">
+<img src="img2.jpg">
+</div>
+
+</div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" style="background:url('fundo.jpg') center/cover;">
+<div class="overlay"></div>
+<div class="content">
+
+<div class="text">
+<h1>O que foi o Quinhentismo</h1>
+<p>O Quinhentismo foi o primeiro movimento literário do Brasil, surgido no século XVI, logo após a chegada dos portugueses em 1500. Nesse período, o Brasil ainda era uma colônia de Portugal, e os textos refletiam o olhar europeu sobre a nova terra.</p>
+<p>As produções eram divididas em dois tipos:</p>
+<p>Literatura de informação: descrevia a terra, a natureza e os indígenas.</p>
+<p>Literatura de formação: feita por jesuítas, com objetivo de catequizar os indígenas.</p>
+</div>
+
+<div class="image">
+<img src="img3.jpg">
+</div>
+
+</div>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide" style="background:url('fundo.jpg') center/cover;">
+<div class="overlay"></div>
+<div class="content">
+
+<div class="text">
+<h1>Principais autores</h1>
+<p>Os movimentos literários brasileiros foram marcados por autores fundamentais como Machado de Assis, José de Alencar, Oswald e Mário de Andrade e João Cabral de Melo Neto.</p>
+</div>
+
+<div class="image">
+<img src="img4.jpg">
+</div>
+
+</div>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide" style="background:url('fundo.jpg') center/cover;">
+<div class="overlay"></div>
+<div class="content">
+
+<div class="text">
+<h1>Movimentos literários</h1>
+<p>A literatura brasileira se divide em Era Colonial e Era Nacional, com movimentos como Quinhentismo, Barroco, Arcadismo, Romantismo, Realismo, Simbolismo e Modernismo.</p>
+</div>
+
+<div class="image">
+<img src="img5.jpg">
+</div>
+
+</div>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function showSlide(i) {
+    slides[index].classList.remove("active");
+    index = (i + slides.length) % slides.length;
+    slides[index].classList.add("active");
+}
+
+// teclado
+document.addEventListener("keydown", (e)=>{
+    if(e.key === "ArrowRight") showSlide(index+1);
+    if(e.key === "ArrowLeft") showSlide(index-1);
+});
+
+// clique / toque
+document.addEventListener("click", (e)=>{
+    if(e.clientX < window.innerWidth/2){
+        showSlide(index-1);
+    } else {
+        showSlide(index+1);
+    }
+});
+
+// partículas
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for(let i=0;i<80;i++){
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*2,
+        dx: Math.random()-0.5,
+        dy: Math.random()-0.5
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        p.x+=p.dx;
+        p.y+=p.dy;
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
